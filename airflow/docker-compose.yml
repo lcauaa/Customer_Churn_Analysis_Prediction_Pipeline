@@ -1,0 +1,75 @@
+services:
+  postgres:
+    image: postgres:13
+    container_name: airflow-postgres
+    environment:
+      POSTGRES_USER: airflow
+      POSTGRES_PASSWORD: airflow
+      POSTGRES_DB: airflow
+    volumes:
+      - postgres-db-volume:/var/lib/postgresql/data
+      - ./.env:/opt/airflow/.env
+
+  airflow-webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: custom-airflow:2.7.2
+    container_name: airflow-webserver
+    restart: always
+    depends_on:
+      - postgres
+      - airflow-scheduler
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
+      BUCKET_NAME: ${BUCKET_NAME}
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__FERNET_KEY: edk1OOILh6nZ2NJx69qzZIG8w3BdVwF4Ko9u-X6GMbQ=
+      AIRFLOW__WEBSERVER__SECRET_KEY: fZYXh_qdR3JwlogM4k8iI_LuFNtE0eQHkuZ7OhZBAZY
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./scripts:/opt/airflow/scripts
+      - ./plugins:/opt/airflow/plugins
+      - ./.env:/opt/airflow/.env
+      - ./data:/opt/airflow/data
+    ports:
+      - "8081:8080"
+    command: airflow webserver
+
+  airflow-scheduler:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: custom-airflow:2.7.2
+    container_name: airflow-scheduler
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
+      BUCKET_NAME: ${BUCKET_NAME}
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__CORE__FERNET_KEY: edk1OOILh6nZ2NJx69qzZIG8w3BdVwF4Ko9u-X6GMbQ=
+      AIRFLOW__WEBSERVER__SECRET_KEY: fZYXh_qdR3JwlogM4k8iI_LuFNtE0eQHkuZ7OhZBAZY
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./scripts:/opt/airflow/scripts
+      - ./plugins:/opt/airflow/plugins
+      - ./.env:/opt/airflow/.env
+      - ./data:/opt/airflow/data
+    command: >
+      bash -c "
+        airflow db migrate &&
+        airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com &&
+        airflow scheduler
+      "
+
+volumes:
+  postgres-db-volume:
