@@ -55,7 +55,7 @@ def upload_to_s3():
 
 
 default_args = {
-    "start_date": datetime(2025, 5, 22),
+    "start_date": datetime(2025, 5, 21),
     "retries": 0,
 }
 

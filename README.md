@@ -17,7 +17,7 @@ Key components:
 
 ## 📸 Dashboard Preview
 
-![churn_dashboard](./assets/customer_churn_dashboard.png)
+![churn_dashboard](./assets/Customer_churn_dashboard.png)
 you can check the dashboard here: [customer churn report](https://public.tableau.com/views/customer_churn_report/Dashboard1?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
 
 ### some KPIS ⭐

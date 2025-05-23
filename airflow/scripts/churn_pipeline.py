@@ -372,4 +372,4 @@ def run_churn_prediction():
 if __name__ == "__main__":
     predictor, results = run_churn_prediction()
 
-    print("\nPredictions file was created :)")
+    print("\nPredictions file was created :) !")

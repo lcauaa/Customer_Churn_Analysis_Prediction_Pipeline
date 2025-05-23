@@ -26,8 +26,8 @@ services:
       AWS_REGION: ${AWS_REGION}
       BUCKET_NAME: ${BUCKET_NAME}
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__CORE__FERNET_KEY: edk1OOILh6nZ2NJx69qzZIG8w3BdVwF4Ko9u-X6GMbQ=
-      AIRFLOW__WEBSERVER__SECRET_KEY: fZYXh_qdR3JwlogM4k8iI_LuFNtE0eQHkuZ7OhZBAZY
+      AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW__CORE__FERNET_KEY}
+      AIRFLOW__WEBSERVER__SECRET_KEY: ${AIRFLOW__WEBSERVER__SECRET_KEY}
       AIRFLOW__CORE__LOAD_EXAMPLES: "False"
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     volumes:
@@ -55,8 +55,8 @@ services:
       AWS_REGION: ${AWS_REGION}
       BUCKET_NAME: ${BUCKET_NAME}
       AIRFLOW__CORE__EXECUTOR: LocalExecutor
-      AIRFLOW__CORE__FERNET_KEY: edk1OOILh6nZ2NJx69qzZIG8w3BdVwF4Ko9u-X6GMbQ=
-      AIRFLOW__WEBSERVER__SECRET_KEY: fZYXh_qdR3JwlogM4k8iI_LuFNtE0eQHkuZ7OhZBAZY
+      AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW__CORE__FERNET_KEY}
+      AIRFLOW__WEBSERVER__SECRET_KEY: ${AIRFLOW__WEBSERVER__SECRET_KEY}
       AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     volumes:
       - ./dags:/opt/airflow/dags
